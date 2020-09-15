@@ -1,0 +1,9 @@
+$grey: rgb(241, 241, 241);
+$darkGrey: rgb(202, 202, 202);
+
+body {
+    background-color: $grey;
+}
+
+@import "./components/Join/Join.scss";
+@import "./components/System/System.scss";

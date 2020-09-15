@@ -1,0 +1,38 @@
+.System {
+    padding: 0 10px;
+}
+.drag {
+    border: 1px solid red;
+    box-sizing: border-box;
+   
+   
+    // resize: horizontal;
+    
+    overflow: hidden;
+  }
+.sortableTarget {
+    justify-content: space-around;
+    background: red;
+
+    .conatiner {
+        width: 100%;
+        position: relative;
+        border: 1px dashed gray;
+        height: 60px;
+        display: flex;
+        .thisCard {
+            position: absolute;
+            border: 1px dashed gray;
+        padding: 5px 15px;
+        height: 40px;
+        margin: 10px;
+        background: white ;
+        cursor: move;
+        }
+    }
+}
+
+@import "./DatePickerHeader/DatePickerHeader.scss";
+@import "./Table/Table.scss";
+@import "./AbsoluteSmooth/AbsoluteSmooth.scss";
+@import "./Table/Test.scss";
