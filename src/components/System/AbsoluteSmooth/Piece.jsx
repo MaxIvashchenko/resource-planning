@@ -29,7 +29,7 @@ export default function Piece({ piece, daysNumber,cellWidth }) {
         return (
             // <div
                 <Draggable 
-                key={piece.id + "-draggable"} style={{ overflow: "visible", position: 'absolute', left: piece.left, width: cellWidth }}>
+                key={piece.id + "-draggable"} style={{ overflow: "visible", position: 'absolute', left: piece.positionX*cellWidth, width: cellWidth }}>
                 <div className={`handlers ${piece.type}`} >
                     <div className="project">{piece.title}</div>
                     <div className="resizer leftHandler" />

@@ -26,7 +26,7 @@ class AbsoluteSmooth extends Component {
         this.getDaysInRow = this.props.getDaysInRow
         this.onDropReady = this.onDropReady.bind(this);
         this.myRef = React.createRef()
-        this.cellWidth = this.props.cellWidth
+        // this.cellWidth = this.props.cellWidth
 
         this.state = {
             startDrag: false,
@@ -35,7 +35,7 @@ class AbsoluteSmooth extends Component {
             dayOffsetLeft: 0,
             daysRowWidth: 0,
             x: 0,
-
+            // cellWidth: this.props.cellWidth,
 
             board: this.props.board
         }
@@ -59,8 +59,8 @@ class AbsoluteSmooth extends Component {
     }
 
     render() {
-        const cellWidth = this.myRef.current && this.myRef.current.offsetWidth / this.state.daysNumber
-        this.cellWidth = cellWidth
+        // const cellWidth = this.myRef.current && this.myRef.current.offsetWidth / this.state.daysNumber
+        // this.cellWidth = cellWidth
         // console.log(this.myRef.current && this.myRef.current.offsetWidth)
         // const { cellWidth } = this.state
         // console.log(this.state)
@@ -88,13 +88,13 @@ class AbsoluteSmooth extends Component {
                                     <div className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
                                         <p className="emploeesName">{row.name} {row.surname}</p>
 
-                                        <div ref={this.myRef} id="inside" className="day" onMouseMove={this.handleMouseMove}>
+                                        <div style={{width: this.props.rowWidth}} id="inside" className="day" onMouseMove={this.handleMouseMove}>
 
                                             <Container
 
                                                 style={{ position: "relative", height: '100%' }}
                                                 behaviour="drop-zone"
-                                                onDrop={(result) => this.onDrop(result, departamentID, rowIndex, this.cellWidth)}
+                                                onDrop={(result) => this.onDrop(result, departamentID, rowIndex, this.props.cellWidth)}
                                                 shouldAcceptDrop={(_, payload) => this.shouldAcceptDrop(payload, departamentID, rowIndex,)}
                                                 getChildPayload={(i) => departament.workers[rowIndex].projects[i]}
                                                 // onDragEnter={() => this.onDragEnter(departamentID, rowIndex,)}
@@ -102,11 +102,11 @@ class AbsoluteSmooth extends Component {
                                                 animationDuration={'none'}
                                                 dropClass='dropClass'
                                                 onDragStart={(result) => this.onDragStart(result, departamentID, rowIndex,)}
-                                                onDragEnd={(result) => this.onDragEnd(result, departamentID, rowIndex, this.cellWidth)}
+                                                onDragEnd={(result) => this.onDragEnd(result, departamentID, rowIndex, this.props.cellWidth)}
                                             // onDropReady={(result) => this.onDropReady(result, departamentID, rowIndex,)}
                                             >
 
-                                                {row.projects.map((piece, pieceIndex) => <Piece key={'piece ' + pieceIndex} daysNumber={this.state.daysNumber} piece={piece} cellWidth={this.cellWidth}/>)}
+                                                {row.projects.map((piece, pieceIndex) => <Piece key={'piece ' + pieceIndex} daysNumber={this.state.daysNumber} piece={piece} cellWidth={this.props.cellWidth}/>)}
                                             </Container>
 
                                         </div>
@@ -149,8 +149,9 @@ class AbsoluteSmooth extends Component {
     onDrop(dropResult, departament, rowIndex, cellWidth) {
         const { addedIndex, removedIndex, payload } = dropResult;
         const obj = Object.assign({}, payload);
-console.log(cellWidth)
-        obj.left = Math.round(this.state.x / cellWidth) * cellWidth
+
+        obj.positionX = Math.round(this.state.x / cellWidth) -1
+
         // console.log('onDrop',this.state.x, obj.left)
 
         if (addedIndex !== null || removedIndex !== null) {

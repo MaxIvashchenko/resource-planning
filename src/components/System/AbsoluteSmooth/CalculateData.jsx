@@ -3,12 +3,13 @@ import AbsoluteSmooth from './AbsoluteSmooth'
 
 export default function CalculateData({ daysInRow, rowWidth }) {
     const cellWidth = rowWidth / daysInRow.length
+
     const board = [
         {
             departamentName: "BACKEND", show: true, workers: [
                 {
                     id: 'back-1', name: 'Leonid', surname: 'Bondar', department: 'back', projects: [
-                        { left: 0, positionY: 1, id: "back-1-1", title: "Startup", projStart: "Aug 15 2020", duration: 2, type: 'main' }
+                        { left: 0, positionX: 0, positionY: 1, id: "back-1-1", title: "Startup", projStart: "Aug 15 2020", duration: 2, type: 'main' }
                     ]
                 },
                 {
@@ -19,7 +20,7 @@ export default function CalculateData({ daysInRow, rowWidth }) {
                 },
                 {
                     id: 'back-4', name: 'Artur', surname: 'Rudenko', department: 'back', projects: [
-                        { left: 240, positionY: 1, id: "back-4-1", title: "Manifest", projStart: "Aug 19 2020", duration: 4, type: "education" }
+                        { left: 240, positionX: 2, positionY: 1, id: "back-4-1", title: "Manifest", projStart: "Aug 19 2020", duration: 4, type: "education" }
                     ]
                 },
                 {
@@ -31,8 +32,8 @@ export default function CalculateData({ daysInRow, rowWidth }) {
             departamentName: "QA", show: true, workers: [
                 {
                     id: 'qa-1', name: 'Leonid', surname: 'Bondar', department: 'qa', projects: [
-                        { left: 120, positionY: 1, id: "qa-1-1", title: "Startup 1", projStart: "Aug 15 2020", duration: 2, type: 'main' },
-                        { left: 131 * 4, positionY: 1, id: "qa-1-2", title: "Startup 2", projStart: "Aug 15 2020", duration: 2, type: 'main' },
+                        { left: 120, positionX: 1, positionY: 1, id: "qa-1-1", title: "Startup 1", projStart: "Aug 15 2020", duration: 2, type: 'main' },
+                        { left: 131 * 4, positionX: 3, positionY: 1, id: "qa-1-2", title: "Startup 2", projStart: "Aug 15 2020", duration: 2, type: 'main' },
                     ]
                 },
                 {
@@ -50,8 +51,5 @@ export default function CalculateData({ daysInRow, rowWidth }) {
 
 
 
-    return (
-
-        <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} />
-    )
+    return <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} rowWidth={rowWidth} />
 }
