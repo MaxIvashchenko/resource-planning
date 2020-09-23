@@ -3,6 +3,9 @@ import { Draggable } from 'react-smooth-dnd';
 
 
 export default function Piece({ piece, daysNumber,cellWidth }) {
+
+    const blockWidth =   cellWidth || 0
+
     const element = document.querySelector('.handlers');
     const resizers = document.querySelectorAll('.rightHandler')
     // console.log(resizers)
@@ -25,11 +28,11 @@ export default function Piece({ piece, daysNumber,cellWidth }) {
     }
 
     if (piece) {
-        console.log(cellWidth)
+
         return (
             // <div
                 <Draggable 
-                key={piece.id + "-draggable"} style={{ overflow: "visible", position: 'absolute', left: piece.positionX*cellWidth, width: cellWidth }}>
+                key={piece.id + "-draggable"} style={{ overflow: "visible", position: 'absolute', left: piece.positionX*blockWidth, width: blockWidth }}>
                 <div className={`handlers ${piece.type}`} >
                     <div className="project">{piece.title}</div>
                     <div className="resizer leftHandler" />

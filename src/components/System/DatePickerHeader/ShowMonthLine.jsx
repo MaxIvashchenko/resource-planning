@@ -1,20 +1,30 @@
 import React, { useEffect } from 'react'
 import { withSize } from 'react-sizeme'
+import ShowMonth from './ShowMonth';
 
-function ShowMonthLine({ i, month, daysNumber, size, getWidthRow, getRowWidth }) {
-
+function ShowMonthLine({ monthsView, getRowWidth, daysNumber, size }) {
     useEffect(() => {
-        console.log('ShowMonthLine render')
         getRowWidth(size.width)
     }, [getRowWidth, size.width])
 
+    const monthMap = monthsView.map((month, i) => {
+        return (
+            <ShowMonth
+                i={i}
+                key={"month-" + month.month + "-" + i}
+                month={month}
+                daysNumber={daysNumber}
+            />
+        )
+    })
+
     return (
-        <div
-            className={i === 0 ? "month" : "month borderLine"}
-            style={{ width: `${100 / daysNumber * month.sum}%` }}>
-            {month.month}
+        <div className="months">
+            {monthMap}
         </div>
     )
 }
 
 export default withSize()(ShowMonthLine)
+
+

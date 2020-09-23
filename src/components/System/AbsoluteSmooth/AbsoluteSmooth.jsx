@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 
-import { Container, Draggable } from 'react-smooth-dnd';
+import { Container } from 'react-smooth-dnd';
 import DepartmentTitle from './DepartmentTitle';
-// import moment from 'moment';
-
-import Lines from './Lines';
-// import sizeMe from 'react-sizeme'
 import Piece from './Piece';
 
 
@@ -129,10 +125,7 @@ class AbsoluteSmooth extends Component {
         this.setState({ dayOffsetLeft });
     }
 
-    componentWillUpdate() {
-        // console.log(this.myRef.current.offsetWidth)
-
-    }
+   
 
     shouldAcceptDrop(payload, departament, rowIndex, colIndex) {
 

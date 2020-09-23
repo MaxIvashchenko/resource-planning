@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import DatePickerHeader from './DatePickerHeader/DatePickerHeader'
 // import Table from './Table/Table';
-import AbsoluteSmooth from './AbsoluteSmooth/AbsoluteSmooth';
 import Lines from './AbsoluteSmooth/Lines';
 import CalculateData from './AbsoluteSmooth/CalculateData';
 // import Test from './Table/Test';
@@ -18,9 +17,7 @@ export default class System extends Component {
             daysInRow: [],
             rowWidth: null,
         }
-
     }
-
 
     getDaysInRow = (daysInRow) => {
         this.setState({ daysInRow });
@@ -30,17 +27,12 @@ export default class System extends Component {
         this.setState({ rowWidth });
     }
 
-
-
     render() {
-
 
         return (
             <>
                 <div className="System container-fluid">
                     <DatePickerHeader getDaysInRow={this.getDaysInRow} getRowWidth={this.getRowWidth} />
-
-                    {/* <div ref={this.ref} className='drag'> Resize me!  </div> */}
 
                     {/* <Table days={this.state.daysInRow} /> */}
                     <div className="AbsoluteSmooth"  >
@@ -48,7 +40,7 @@ export default class System extends Component {
                         <CalculateData daysInRow={this.state.daysInRow} rowWidth={this.state.rowWidth} />
 
 
-                        {this.state.daysInRow.map((v, i) => <Lines index={i} cellWidth={this.state.rowWidth / this.state.daysInRow.length} />)}
+                        {this.state.daysInRow.reverse().map((v, i) => <Lines key={`svgLines-${v.date}-${v.month}-${i}`} index={i} cellWidth={this.state.rowWidth / this.state.daysInRow.length} />)}
                         <Lines index={-1} cellWidth={this.state.rowWidth / this.state.daysInRow.length} />
                     </div>
 

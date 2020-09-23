@@ -1,17 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 export default function Lines({ index, cellWidth }) {
     const indexs = index + 1
-
-    useEffect(() => {
-
-       
-        
-
-
-    }, [cellWidth])
-
-
 
     console.log('rerender Lines' )
     return (

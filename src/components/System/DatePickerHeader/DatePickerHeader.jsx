@@ -3,14 +3,15 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import ShowMonthLine from './ShowMonthLine';
 import ShowMDaysLine from './ShowMDaysLine';
 import ButtonsSwitcher from './ButtonsSwitcher';
-// import sizeMe from 'react-sizeme'
+
+import ShowMonthLine from './ShowMonthLine';
+
 
 const calendarDay = 24 * 60 * 60 * 1000;
 
-function DatePickerHeader({ getDaysInRow ,getRowWidth}) {
+function DatePickerHeader({ getDaysInRow, getRowWidth }) {
     const [daysNumber, setDaysNumber] = useState(5);
     const [days, setDays] = useState([]);
     const [monthsView, setmonthsView] = useState([]);
@@ -30,7 +31,7 @@ function DatePickerHeader({ getDaysInRow ,getRowWidth}) {
             const year = moment(startDate).add(1 * i, 'day').year()
             const projects = {}
 
-            days.push({ id: weekDay + "-" + date + "-" + month, weekDay, date, month, year,projects })
+            days.push({ id: weekDay + "-" + date + "-" + month, weekDay, date, month, year, projects })
         }
 
         const somOfDays = days.reduce((acc, el) => {
@@ -106,15 +107,7 @@ function DatePickerHeader({ getDaysInRow ,getRowWidth}) {
             <div className="datesShow">
 
                 <ButtonsSwitcher handler={monthHandler} nameOfClass={"months"}>
-                    {monthsView.map((month, i) =>
-                        <ShowMonthLine
-                            i={i}
-                            key={"month-" + month.month + "-" + i}
-                            month={month}
-                            daysNumber={daysNumber}
-                            getRowWidth={getRowWidth}
-                        />
-                    )}
+                    <ShowMonthLine monthsView={monthsView} getRowWidth={getRowWidth} daysNumber={daysNumber} />
                 </ButtonsSwitcher>
 
                 <ButtonsSwitcher handler={dayHandler} nameOfClass={"days"}>
@@ -134,4 +127,4 @@ function DatePickerHeader({ getDaysInRow ,getRowWidth}) {
 }
 
 
-export default  DatePickerHeader
+export default DatePickerHeader
