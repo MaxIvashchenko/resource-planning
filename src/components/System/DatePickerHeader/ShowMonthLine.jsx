@@ -1,8 +1,13 @@
-import React  from 'react'
+import React, { useEffect } from 'react'
+import { withSize } from 'react-sizeme'
 
-function ShowMonthLine({ i, month, daysNumber, size, getWidthRow }) {
-   
-  
+function ShowMonthLine({ i, month, daysNumber, size, getWidthRow, getRowWidth }) {
+
+    useEffect(() => {
+        console.log('ShowMonthLine render')
+        getRowWidth(size.width)
+    }, [getRowWidth, size.width])
+
     return (
         <div
             className={i === 0 ? "month" : "month borderLine"}
@@ -12,4 +17,4 @@ function ShowMonthLine({ i, month, daysNumber, size, getWidthRow }) {
     )
 }
 
-export default  ShowMonthLine
+export default withSize()(ShowMonthLine)

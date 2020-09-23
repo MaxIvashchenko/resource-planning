@@ -6,11 +6,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import ShowMonthLine from './ShowMonthLine';
 import ShowMDaysLine from './ShowMDaysLine';
 import ButtonsSwitcher from './ButtonsSwitcher';
-import sizeMe from 'react-sizeme'
+// import sizeMe from 'react-sizeme'
 
 const calendarDay = 24 * 60 * 60 * 1000;
 
-function DatePickerHeader({ getDaysInRow }) {
+function DatePickerHeader({ getDaysInRow ,getRowWidth}) {
     const [daysNumber, setDaysNumber] = useState(5);
     const [days, setDays] = useState([]);
     const [monthsView, setmonthsView] = useState([]);
@@ -75,6 +75,7 @@ function DatePickerHeader({ getDaysInRow }) {
         setStartDate(new Date().getTime())
         setEndDate(new Date().setDate(new Date().getDate() + 14))
     }
+    // console.log('rerender')
     return (
         <div className="DatePickerHeader container-fluid">
             <div className="picker">
@@ -111,6 +112,7 @@ function DatePickerHeader({ getDaysInRow }) {
                             key={"month-" + month.month + "-" + i}
                             month={month}
                             daysNumber={daysNumber}
+                            getRowWidth={getRowWidth}
                         />
                     )}
                 </ButtonsSwitcher>

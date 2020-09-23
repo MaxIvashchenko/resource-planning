@@ -1,15 +1,16 @@
 .System {
     padding: 0 10px;
+
+   
 }
 .drag {
     border: 1px solid red;
     box-sizing: border-box;
-   
-   
+
     // resize: horizontal;
-    
+
     overflow: hidden;
-  }
+}
 .sortableTarget {
     justify-content: space-around;
     background: red;
@@ -23,11 +24,11 @@
         .thisCard {
             position: absolute;
             border: 1px dashed gray;
-        padding: 5px 15px;
-        height: 40px;
-        margin: 10px;
-        background: white ;
-        cursor: move;
+            padding: 5px 15px;
+            height: 40px;
+            margin: 10px;
+            background: white;
+            cursor: move;
         }
     }
 }

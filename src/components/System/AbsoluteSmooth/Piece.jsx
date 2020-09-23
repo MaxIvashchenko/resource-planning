@@ -2,10 +2,10 @@ import React from 'react'
 import { Draggable } from 'react-smooth-dnd';
 
 
-export default function Piece({ piece, daysNumber }) {
+export default function Piece({ piece, daysNumber,cellWidth }) {
     const element = document.querySelector('.handlers');
     const resizers = document.querySelectorAll('.rightHandler')
-    console.log(resizers)
+    // console.log(resizers)
     for (let i = 0; i < resizers.length; i++) {
         const currentResizer = resizers[i];
         currentResizer.addEventListener('mousedown', function (e) {
@@ -25,10 +25,11 @@ export default function Piece({ piece, daysNumber }) {
     }
 
     if (piece) {
+        console.log(cellWidth)
         return (
             // <div
                 <Draggable 
-                key={piece.id + "-draggable"} style={{ overflow: "visible", position: 'absolute', left: piece.left, width: `${100 / daysNumber}%` }}>
+                key={piece.id + "-draggable"} style={{ overflow: "visible", position: 'absolute', left: piece.left, width: cellWidth }}>
                 <div className={`handlers ${piece.type}`} >
                     <div className="project">{piece.title}</div>
                     <div className="resizer leftHandler" />
