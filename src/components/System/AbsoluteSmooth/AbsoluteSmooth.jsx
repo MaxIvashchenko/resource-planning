@@ -21,8 +21,6 @@ class AbsoluteSmooth extends Component {
 
         this.getDaysInRow = this.props.getDaysInRow
         this.onDropReady = this.onDropReady.bind(this);
-        this.myRef = React.createRef()
-        // this.cellWidth = this.props.cellWidth
 
         this.state = {
             startDrag: false,
@@ -31,11 +29,11 @@ class AbsoluteSmooth extends Component {
             dayOffsetLeft: 0,
             daysRowWidth: 0,
             x: 0,
-            // cellWidth: this.props.cellWidth,
+
 
             board: this.props.board
         }
-        // this.daysRowdWith = this.props.size.width - this.state.dayOffsetLeft
+
 
     }
 
@@ -43,7 +41,7 @@ class AbsoluteSmooth extends Component {
 
         if (nextProps.days !== this.props.days) {
             this.setState({ days: nextProps.days, daysNumber: nextProps.days.length })
-        } 
+        }
     }
 
 
@@ -55,13 +53,7 @@ class AbsoluteSmooth extends Component {
     }
 
     render() {
-        // const cellWidth = this.myRef.current && this.myRef.current.offsetWidth / this.state.daysNumber
-        // this.cellWidth = cellWidth
-        // console.log(this.myRef.current && this.myRef.current.offsetWidth)
-        // const { cellWidth } = this.state
-        // console.log(this.state)
-        // const { width, height } = this.props.size
-        // console.log('render',cellWidth)
+
         return (
 
 
@@ -84,10 +76,10 @@ class AbsoluteSmooth extends Component {
                                     <div className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
                                         <p className="emploeesName">{row.name} {row.surname}</p>
 
-                                        <div style={{width: this.props.rowWidth}} id="inside" className="day" onMouseMove={this.handleMouseMove}>
+                                        <div style={{ width: this.props.rowWidth }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
 
                                             <Container
-
+                                                className="thisIsContainer"
                                                 style={{ position: "relative", height: '100%' }}
                                                 behaviour="drop-zone"
                                                 onDrop={(result) => this.onDrop(result, departamentID, rowIndex, this.props.cellWidth)}
@@ -102,7 +94,7 @@ class AbsoluteSmooth extends Component {
                                             // onDropReady={(result) => this.onDropReady(result, departamentID, rowIndex,)}
                                             >
 
-                                                {row.projects.map((piece, pieceIndex) => <Piece key={'piece ' + pieceIndex} daysNumber={this.state.daysNumber} piece={piece} cellWidth={this.props.cellWidth}/>)}
+                                                {row.projects.map((piece, pieceIndex) => <Piece key={'piece ' + pieceIndex} daysNumber={this.state.daysNumber} piece={piece} cellWidth={this.props.cellWidth} />)}
                                             </Container>
 
                                         </div>
@@ -125,7 +117,7 @@ class AbsoluteSmooth extends Component {
         this.setState({ dayOffsetLeft });
     }
 
-   
+
 
     shouldAcceptDrop(payload, departament, rowIndex, colIndex) {
 
@@ -143,25 +135,21 @@ class AbsoluteSmooth extends Component {
         const { addedIndex, removedIndex, payload } = dropResult;
         const obj = Object.assign({}, payload);
 
-        obj.positionX = Math.round(this.state.x / cellWidth) -1
-
-        // console.log('onDrop',this.state.x, obj.left)
+        obj.positionX = Math.round(this.state.x / cellWidth) - 1
 
         if (addedIndex !== null || removedIndex !== null) {
 
 
             if (removedIndex !== null) {
-
                 this.state.board[departament].workers[rowIndex].projects.splice(removedIndex, 1)
             }
 
             if (addedIndex !== null) {
-
                 this.state.board[departament].workers[rowIndex].projects.push(obj);
             }
 
             this.setState({ startDrag: false });
-            // this.forceUpdate();
+            this.forceUpdate();
         }
     }
 
