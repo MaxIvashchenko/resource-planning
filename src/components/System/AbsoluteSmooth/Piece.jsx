@@ -5,7 +5,7 @@ import { Draggable } from 'react-smooth-dnd';
 export default function Piece({ piece, daysNumber, cellWidth }) {
 
 
-    const blockWidth = cellWidth || 0
+    const blockWidth = cellWidth || 1
 
     const element = document.querySelectorAll('.handlers');
     const rightHandlers = document.querySelectorAll('.rightHandler')
@@ -27,6 +27,11 @@ export default function Piece({ piece, daysNumber, cellWidth }) {
         currentResizer.addEventListener('mouseout', addDragger)
     }
 
+    function stopResize(resize) {
+        window.removeEventListener('mousemove', resize);
+        console.log(' stopResize')
+    }
+
     for (let i = 0; i < rightHandlers.length; i++) {
         const currentRightResizer = rightHandlers[i];
         // currentRightResizer.addEventListener('mouseover',  )
@@ -35,18 +40,20 @@ export default function Piece({ piece, daysNumber, cellWidth }) {
         currentRightResizer.addEventListener('mousedown', function (e) {
             e.preventDefault()
             window.addEventListener('mousemove', resize)
-            window.addEventListener('mouseup', stopResize)
+            window.addEventListener('mouseup', () => stopResize(resize))
         })
         function resize(e) {
-            if (currentRightResizer.classList.contains('rightHandler')) {
-                element[i].style.width = e.pageX - element[i].getBoundingClientRect().left + 'px';
+
+            if (currentRightResizer.classList.contains('rightHandler')&& cellWidth!==0) {
+                let moveDiff = e.pageX - element[i].getBoundingClientRect().left;
+                let addingWidth = Math.round(moveDiff / cellWidth)
+                let newWidth = addingWidth * cellWidth
+
+                element[i].style.width = newWidth + 'px';
             }
         }
 
-        function stopResize() {
-            window.removeEventListener('mousemove', resize);
-            console.log('stopResize')
-        }
+
     }
 
 
@@ -54,7 +61,6 @@ export default function Piece({ piece, daysNumber, cellWidth }) {
     for (let i = 0; i < leftHandlers.length; i++) {
         const currentLeftResizer = leftHandlers[i];
         let original_width = 0;
-        let original_x = 0;
         let original_mouse_x = 0;
         let original_left = 0;
         const minimum_size = cellWidth;
@@ -67,28 +73,30 @@ export default function Piece({ piece, daysNumber, cellWidth }) {
             original_mouse_x = e.pageX;
 
             window.addEventListener('mousemove', resize)
-            window.addEventListener('mouseup', stopResize)
+            window.addEventListener('mouseup', () => stopResize(resize))
         })
 
         function resize(e) {
 
-            if (currentLeftResizer.classList.contains('leftHandler')) {
+            if (currentLeftResizer.classList.contains('leftHandler')&& cellWidth!==0) {
 
-                const width = original_width - (e.pageX - original_mouse_x)
+                let moveDiff = e.pageX - original_mouse_x;
+                let addingWidth = Math.round(-moveDiff / cellWidth)*cellWidth
+
+                const width = original_width + addingWidth 
+
+
 
                 if (width > minimum_size) {
                     element[i].style.width = width + 'px'
-                    element[i].style.left = original_left + (e.pageX - original_mouse_x) + 'px'
+                    element[i].style.left = original_left - addingWidth + 'px'
                 }
 
 
             }
         }
 
-        function stopResize() {
-            window.removeEventListener('mousemove', resize);
-            console.log('stopResize')
-        }
+
     }
 
     if (piece) {
