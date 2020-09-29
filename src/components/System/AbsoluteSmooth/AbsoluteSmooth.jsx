@@ -73,14 +73,14 @@ class AbsoluteSmooth extends Component {
                             {departament.workers.map((row, rowIndex) => {
 
                                 return (
-                                    <div className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
+                                    <div   className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
                                         <p className="emploeesName">{row.name} {row.surname}</p>
 
                                         <div style={{ width: this.props.rowWidth }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
 
                                             <Container
                                                 className="thisIsContainer"
-                                                style={{ position: "relative", height: '100%' }}
+                                                style={{ position: "relative",   height: `${42*row.blockHeight}px`}}
                                                 behaviour="drop-zone"
                                                 onDrop={(result) => this.onDrop(result, departamentID, rowIndex, this.props.cellWidth)}
                                                 shouldAcceptDrop={(_, payload) => this.shouldAcceptDrop(payload, departamentID, rowIndex,)}
@@ -94,7 +94,18 @@ class AbsoluteSmooth extends Component {
                                             // onDropReady={(result) => this.onDropReady(result, departamentID, rowIndex,)}
                                             >
 
-                                                {row.projects.map((piece, pieceIndex) => <Piece key={'piece ' + pieceIndex} daysNumber={this.state.daysNumber} piece={piece} cellWidth={this.props.cellWidth} />)}
+                                                {row.projects.map((piece, pieceIndex) => {
+                                                    return (
+                                                        <Piece key={'piece ' + pieceIndex}
+                                                            pieceIndex={pieceIndex}
+                                                            rowIndex={rowIndex}
+                                                            departamentID={departamentID}
+                                                            board={this.props.board}
+                                                            piece={piece}
+                                                            cellWidth={this.props.cellWidth}
+                                                            setSomeData={this.props.setSomeData} />
+                                                    )
+                                                })}
                                             </Container>
 
                                         </div>
@@ -151,6 +162,9 @@ class AbsoluteSmooth extends Component {
             this.setState({ startDrag: false });
             this.forceUpdate();
         }
+
+
+        
     }
 
     handleMouseMove(event) {
@@ -162,30 +176,19 @@ class AbsoluteSmooth extends Component {
     }
 
     onDragStart(result, departament, row) {
-        // this.state.board[departament].workers[row].days[col].hover = true;
-        // console.log(result, departament, row)
-
         this.setState({ startDrag: true });
-        // this.forceUpdate();
     }
     onDragEnter(departament, row, col) {
-        // this.state.board[departament].workers[row].days[col].hover = true;
-        // this.forceUpdate();
+
     }
     onDragEnd(departament, row, col) {
-        // this.state.board[departament].workers[row].days[col].hover = true;
-        // this.forceUpdate();
-
-        // console.log('onDragEnd',this.state.x)
 
     }
     onDropReady(dropResult) {
-        // const { removedIndex, addedIndex, payload, element } = dropResult;
+
     }
     onDragLeave(departament, row, col) {
-        // console.log(departament, row)
-        // this.state.board[departament].workers[row].days[col].hover = false;
-        // this.forceUpdate();
+
     }
 }
 

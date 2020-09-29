@@ -1,103 +1,120 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Draggable } from 'react-smooth-dnd';
 
+const element = document.querySelectorAll('.handlers');
+const resizer = document.querySelectorAll('.resizer')
 
-export default function Piece({ piece, daysNumber, cellWidth }) {
 
+for (let i = 0; i < resizer.length; i++) {
+    const currentResizer = resizer[i];
+    console.log('CalculateData resizer')
+    function deleteDragger() {
+        [...element].map(v => v.classList.remove("smooth-dnd-draggable-wrapper"))
+    }
+    function addDragger() {
+        [...element].map(v => v.classList.add("smooth-dnd-draggable-wrapper"))
+    }
+
+    currentResizer.addEventListener('mouseover', deleteDragger)
+    currentResizer.addEventListener('mouseout', addDragger)
+}
+
+export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departamentID, setSomeData, board }) {
 
     const blockWidth = cellWidth || 1
 
-    const element = document.querySelectorAll('.handlers');
-    const rightHandlers = document.querySelectorAll('.rightHandler')
-    const leftHandlers = document.querySelectorAll('.leftHandler')
-    const resizer = document.querySelectorAll('.resizer')
     let ourPosition = piece.positionX * blockWidth
 
+    const element = document.querySelectorAll('.handlers');
+
+    const resizer = document.querySelectorAll('.resizer')
+
+
+
     for (let i = 0; i < resizer.length; i++) {
-        const currentResizer = resizer[i];
-
-        function deleteDragger() {
-            [...element].map(v => v.classList.remove("smooth-dnd-draggable-wrapper"))
-        }
-        function addDragger() {
-            [...element].map(v => v.classList.add("smooth-dnd-draggable-wrapper"))
-        }
-
-        currentResizer.addEventListener('mouseover', deleteDragger)
-        currentResizer.addEventListener('mouseout', addDragger)
-    }
-
-    function stopResize(resize) {
-        window.removeEventListener('mousemove', resize);
-        console.log(' stopResize')
-    }
-
-    for (let i = 0; i < rightHandlers.length; i++) {
-        const currentRightResizer = rightHandlers[i];
-        // currentRightResizer.addEventListener('mouseover',  )
-
-
-        currentRightResizer.addEventListener('mousedown', function (e) {
-            e.preventDefault()
-            window.addEventListener('mousemove', resize)
-            window.addEventListener('mouseup', () => stopResize(resize))
-        })
-        function resize(e) {
-
-            if (currentRightResizer.classList.contains('rightHandler')&& cellWidth!==0) {
-                let moveDiff = e.pageX - element[i].getBoundingClientRect().left;
-                let addingWidth = Math.round(moveDiff / cellWidth)
-                let newWidth = addingWidth * cellWidth
-
-                element[i].style.width = newWidth + 'px';
-            }
-        }
-
-
-    }
-
-
-
-    for (let i = 0; i < leftHandlers.length; i++) {
-        const currentLeftResizer = leftHandlers[i];
+        const currentRightResizer = resizer[i];
         let original_width = 0;
         let original_mouse_x = 0;
         let original_left = 0;
-        const minimum_size = cellWidth;
-        currentLeftResizer.addEventListener('mousedown', function (e) {
+        let piecePositionX = piece.positionX;
+        let pieceDuration = piece.duration;
+        let elI;
+        if (i < 2) {
+            elI = 0
+        } else if (i % 2 === 0) {
+            elI = i / 2
+        } else {
+            elI = Math.floor(i / 2)
+        }
+
+        currentRightResizer.addEventListener('mousedown', function (e) {
             e.preventDefault()
-
-            original_width = parseFloat(getComputedStyle(element[i], null).getPropertyValue('width').replace('px', ''));
-            original_left = parseFloat(getComputedStyle(element[i], null).getPropertyValue('left').replace('px', ''));
-
+            original_width = parseFloat(getComputedStyle(element[elI], null).getPropertyValue('width').replace('px', ''));
+            original_left = parseFloat(getComputedStyle(element[elI], null).getPropertyValue('left').replace('px', ''));
             original_mouse_x = e.pageX;
+            console.log('mousedown')
 
             window.addEventListener('mousemove', resize)
-            window.addEventListener('mouseup', () => stopResize(resize))
+            window.addEventListener('mouseup', function (e) { window.removeEventListener('mousemove', resize) })
         })
+
 
         function resize(e) {
 
-            if (currentLeftResizer.classList.contains('leftHandler')&& cellWidth!==0) {
+            console.log('resize')
 
-                let moveDiff = e.pageX - original_mouse_x;
-                let addingWidth = Math.round(-moveDiff / cellWidth)*cellWidth
-
-                const width = original_width + addingWidth 
+            if (element[elI].id === `${piece.id}-dragger` && cellWidth !== 0) {
 
 
+                if (currentRightResizer.classList.contains('rightHandler')) {
 
-                if (width > minimum_size) {
-                    element[i].style.width = width + 'px'
-                    element[i].style.left = original_left - addingWidth + 'px'
+                    let moveDiff = e.pageX - element[elI].getBoundingClientRect().left;
+                    console.log(moveDiff)
+                    let addingWidth = Math.round(moveDiff / cellWidth)
+                    let newWidth = addingWidth * cellWidth
+                    // console.log('resize rightHandlers')
+                    if (newWidth >= cellWidth) {
+                        element[elI].style.width = newWidth + 'px';
+                        
+                        piece.duration = addingWidth
+                        setSomeData(piece)
+                    }
+
+
+                } else {
+                    let moveDiff = e.pageX - original_mouse_x;
+                    let math = Math.round(-moveDiff / cellWidth)
+                    let addingWidth = math * cellWidth
+                    const width = Math.round(original_width + addingWidth)
+
+                    let withCellWI = Math.round(cellWidth)
+
+                    if (width >= withCellWI) {
+                        element[elI].style.width = width + 'px'
+                        element[elI].style.left = original_left - addingWidth + 'px'
+
+                        piece.positionX = piecePositionX - math
+                        piece.duration = pieceDuration + math
+                        setSomeData(piece)
+                    }
                 }
-
-
             }
         }
 
+        // setTimeout(() => resize, 2000);
+
+
 
     }
+
+    useEffect(() => {
+        // console.log(board[departamentID].workers[rowIndex].projects[pieceIndex])
+
+        setSomeData(board)
+
+    }, [piece, rowIndex, departamentID])
+    // console.log('changed')
+
 
     if (piece) {
 
@@ -105,7 +122,8 @@ export default function Piece({ piece, daysNumber, cellWidth }) {
 
             <Draggable
                 id={`${piece.id}-dragger`}
-                className="handlers" disabled={true} style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth }}>
+                className="handlers"  
+                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${ 42*piece.positionY}%` }}>
                 <div className={` ${piece.type}`} >
                     <div className="project">{piece.title}</div>
                     <div className="resizer leftHandler" />
