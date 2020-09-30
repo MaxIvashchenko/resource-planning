@@ -4,7 +4,7 @@ import DatePickerHeader from './DatePickerHeader/DatePickerHeader'
 import Lines from './AbsoluteSmooth/Lines';
 import CalculateData from './AbsoluteSmooth/CalculateData';
 // import Test from './Table/Test';
-// import Grid from './Grid/Grid'
+
 
 
 
@@ -45,8 +45,7 @@ export default class System extends Component {
                     </div>
 
                     {/* <Test days={this.state.daysInRow} /> */}
-                    {/* <ChessApp /> */}
-                    {/* <Grid /> */}
+
 
                 </div>
 

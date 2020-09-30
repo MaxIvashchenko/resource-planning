@@ -3,7 +3,9 @@ import React, { Component } from 'react'
 import { Container } from 'react-smooth-dnd';
 import DepartmentTitle from './DepartmentTitle';
 import Piece from './Piece';
-
+import plus from '../../../images/plus.svg'
+import PopUp from '../PopUp/PopUp';
+import {givePositionY} from './../../lab/givePositionY'
 
 
 class AbsoluteSmooth extends Component {
@@ -29,7 +31,7 @@ class AbsoluteSmooth extends Component {
             dayOffsetLeft: 0,
             daysRowWidth: 0,
             x: 0,
-
+            showPopUp: false,
 
             board: this.props.board
         }
@@ -55,69 +57,73 @@ class AbsoluteSmooth extends Component {
     render() {
 
         return (
+            <>
+                {this.state.showPopUp && <PopUp/>}
 
+                { this.state.board.map((departament, departamentID) => {
 
-            this.state.board.map((departament, departamentID) => {
+                    return (
 
-                return (
+                        <div key={departament.departamentName + "-" + departamentID} >
 
-                    <div key={departament.departamentName + "-" + departamentID} >
+                            <DepartmentTitle departament={departament} departamentID={departamentID} toggler={this.toggler} />
 
-                        <DepartmentTitle departament={departament} departamentID={departamentID} toggler={this.toggler} />
+                            <div className={`departmentBlock ${departament.show ? 'showDepartament' : 'hideDepartament'}`}>
 
-                        <div className={`departmentBlock ${departament.show ? 'showDepartament' : 'hideDepartament'}`}>
+                                {/* {this.state.days.map((v, i) => <Lines index={i} cellWidth={ cellWidth}/> )} */}
+                                {/* <Lines index={-1} cellWidth={ cellWidth}/> */}
 
-                            {/* {this.state.days.map((v, i) => <Lines index={i} cellWidth={ cellWidth}/> )} */}
-                            {/* <Lines index={-1} cellWidth={ cellWidth}/> */}
+                                {departament.workers.map((row, rowIndex) => {
 
-                            {departament.workers.map((row, rowIndex) => {
+                                    return (
+                                        <div className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
+                                            <div className="emploeesName">
+                                                <p className="">{row.name} {row.surname}</p>
+                                                <button onClick={() => this.setState({ showPopUp: true })}><img src={plus} alt="plus-icon" /></button>
+                                            </div>
 
-                                return (
-                                    <div   className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
-                                        <p className="emploeesName">{row.name} {row.surname}</p>
+                                            <div style={{ width: this.props.rowWidth, height: `${34 * row.blockHeight}px` }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
 
-                                        <div style={{ width: this.props.rowWidth }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
+                                                <Container
+                                                    className="thisIsContainer"
+                                                    style={{ position: "relative", height: `${34 * row.blockHeight}px` }}
+                                                    behaviour="drop-zone"
+                                                    onDrop={(result) => this.onDrop(result, departamentID, rowIndex, this.props.cellWidth)}
+                                                    shouldAcceptDrop={(_, payload) => this.shouldAcceptDrop(payload, departamentID, rowIndex,)}
+                                                    getChildPayload={(i) => departament.workers[rowIndex].projects[i]}
+                                                    // onDragEnter={() => this.onDragEnter(departamentID, rowIndex,)}
+                                                    onDragLeave={() => this.onDragLeave(departamentID, rowIndex,)}
+                                                    animationDuration={'none'}
+                                                    dropClass='dropClass'
+                                                    onDragStart={(result) => this.onDragStart(result, departamentID, rowIndex,)}
+                                                    onDragEnd={(result) => this.onDragEnd(result, departamentID, rowIndex, this.props.cellWidth)}
+                                                // onDropReady={(result) => this.onDropReady(result, departamentID, rowIndex,)}
+                                                >
 
-                                            <Container
-                                                className="thisIsContainer"
-                                                style={{ position: "relative",   height: `${42*row.blockHeight}px`}}
-                                                behaviour="drop-zone"
-                                                onDrop={(result) => this.onDrop(result, departamentID, rowIndex, this.props.cellWidth)}
-                                                shouldAcceptDrop={(_, payload) => this.shouldAcceptDrop(payload, departamentID, rowIndex,)}
-                                                getChildPayload={(i) => departament.workers[rowIndex].projects[i]}
-                                                // onDragEnter={() => this.onDragEnter(departamentID, rowIndex,)}
-                                                onDragLeave={() => this.onDragLeave(departamentID, rowIndex,)}
-                                                animationDuration={'none'}
-                                                dropClass='dropClass'
-                                                onDragStart={(result) => this.onDragStart(result, departamentID, rowIndex,)}
-                                                onDragEnd={(result) => this.onDragEnd(result, departamentID, rowIndex, this.props.cellWidth)}
-                                            // onDropReady={(result) => this.onDropReady(result, departamentID, rowIndex,)}
-                                            >
+                                                    {row.projects.map((piece, pieceIndex) => {
+                                                        return (
+                                                            <Piece key={'piece ' + pieceIndex}
+                                                                pieceIndex={pieceIndex}
+                                                                rowIndex={rowIndex}
+                                                                departamentID={departamentID}
+                                                                board={this.props.board}
+                                                                piece={piece}
+                                                                cellWidth={this.props.cellWidth}
+                                                                setSomeData={this.props.setSomeData} />
+                                                        )
+                                                    })}
+                                                </Container>
 
-                                                {row.projects.map((piece, pieceIndex) => {
-                                                    return (
-                                                        <Piece key={'piece ' + pieceIndex}
-                                                            pieceIndex={pieceIndex}
-                                                            rowIndex={rowIndex}
-                                                            departamentID={departamentID}
-                                                            board={this.props.board}
-                                                            piece={piece}
-                                                            cellWidth={this.props.cellWidth}
-                                                            setSomeData={this.props.setSomeData} />
-                                                    )
-                                                })}
-                                            </Container>
+                                            </div>
 
                                         </div>
-
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
-                )
-            })
-
+                    )
+                })}
+            </>
         );
     }
     componentDidMount() {
@@ -147,7 +153,7 @@ class AbsoluteSmooth extends Component {
         const obj = Object.assign({}, payload);
 
         obj.positionX = Math.round(this.state.x / cellWidth) - 1
-
+        obj.positionY = 0
         if (addedIndex !== null || removedIndex !== null) {
 
 
@@ -157,14 +163,15 @@ class AbsoluteSmooth extends Component {
 
             if (addedIndex !== null) {
                 this.state.board[departament].workers[rowIndex].projects.push(obj);
+                // givePositionY(this.state.board)
             }
 
-            this.setState({ startDrag: false });
+            this.setState({ startDrag: false, board: givePositionY(this.state.board) });
             this.forceUpdate();
         }
 
 
-        
+
     }
 
     handleMouseMove(event) {

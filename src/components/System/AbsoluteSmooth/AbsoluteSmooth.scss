@@ -1,4 +1,6 @@
 .AbsoluteSmooth {
+    
+    
     .svgLines {
         height: 100%;
         position: absolute;
@@ -60,21 +62,34 @@
         background-color: #fff;
         color: grey;
         position: relative;
+        .emploeesName {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            padding: 10px 0px 10px 5px;
+            border-right: 1px solid $grey;
+            margin: 0;
+            margin-right: 14px;
+            text-align: left;
+            font-size: 14px;
+            button {
+                padding: 0 4px;
+                height: 20px;
+                border: none;
+                outline: none;
+                background: none;
+                img {
+                    width: 10px;
+                }
+            }
+        }
         .dayRow {
             padding: 0 20px 0 0px;
             display: flex;
             // height: 100%;
             border-bottom: 2px solid $grey;
             box-sizing: border-box;
-            p {
-                width: 200px;
-                padding: 10px 0px 10px 5px;
-                border-right: 1px solid $grey;
-                margin: 0;
-                margin-right: 14px;
-                text-align: left;
-                font-size: 14px;
-            }
+
             .smooth-dnd-draggable-wrapper {
                 overflow: visible;
             }

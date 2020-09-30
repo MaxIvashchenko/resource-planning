@@ -123,7 +123,7 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
             <Draggable
                 id={`${piece.id}-dragger`}
                 className="handlers"  
-                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${ 42*piece.positionY}%` }}>
+                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${ 34*piece.positionY}px` }}>
                 <div className={` ${piece.type}`} >
                     <div className="project">{piece.title}</div>
                     <div className="resizer leftHandler" />
