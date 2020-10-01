@@ -49,7 +49,7 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
 
         function resize(e) {
 
-            console.log('resize')
+            // console.log('resize')
 
             if (element[elI].id === `${piece.id}-dragger` && cellWidth !== 0) {
 

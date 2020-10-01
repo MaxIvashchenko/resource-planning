@@ -14,6 +14,7 @@ class AbsoluteSmooth extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.shouldAcceptDrop = this.shouldAcceptDrop.bind(this);
 
+        this.handlerPopUp = this.handlerPopUp.bind(this);
         this.onDragEnter = this.onDragEnter.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
@@ -32,7 +33,7 @@ class AbsoluteSmooth extends Component {
             daysRowWidth: 0,
             x: 0,
             showPopUp: false,
-
+            workerInfo: [],
             board: this.props.board
         }
 
@@ -53,12 +54,21 @@ class AbsoluteSmooth extends Component {
 
         this.setState({ board: newArray })
     }
+    handlerPopUp(bol){
+        this.setState({ showPopUp: bol })
+    }
+
+    getWorkersId(departamentID, workerId){
+        this.setState({ workerInfo: [departamentID, workerId] })
+        
+        this.handlerPopUp(true)
+    }
 
     render() {
 
         return (
             <>
-                {this.state.showPopUp && <PopUp/>}
+                {this.state.showPopUp && <PopUp handlerPopUp={this.handlerPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>}
 
                 { this.state.board.map((departament, departamentID) => {
 
@@ -76,10 +86,10 @@ class AbsoluteSmooth extends Component {
                                 {departament.workers.map((row, rowIndex) => {
 
                                     return (
-                                        <div className="dayRow" key={row.surname + "-dayRow-" + rowIndex} >
+                                        <div className="dayRow" style={{  height: `${34 * row.blockHeight}px` }} key={row.surname + "-dayRow-" + rowIndex} >
                                             <div className="emploeesName">
                                                 <p className="">{row.name} {row.surname}</p>
-                                                <button onClick={() => this.setState({ showPopUp: true })}><img src={plus} alt="plus-icon" /></button>
+                                                <button onClick={() => this.getWorkersId(departamentID, rowIndex)}><img src={plus} alt="plus-icon" /></button>
                                             </div>
 
                                             <div style={{ width: this.props.rowWidth, height: `${34 * row.blockHeight}px` }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
@@ -168,9 +178,9 @@ class AbsoluteSmooth extends Component {
 
             this.setState({ startDrag: false, board: givePositionY(this.state.board) });
             console.log(this.state.board[0].workers[0].projects)
-            this.forceUpdate();
         }
 
+        this.forceUpdate();
 
 
     }

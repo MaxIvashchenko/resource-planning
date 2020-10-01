@@ -1,12 +1,13 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import AbsoluteSmooth from './AbsoluteSmooth'
-import {givePositionY} from '../../lab/givePositionY'
+import { givePositionY } from '../../lab/givePositionY'
+import useForceUpdate from 'use-force-update';
 
 const data = [
     {
         departamentName: "BACKEND", show: true, workers: [
             {
-                id: 'back-1', name: 'Leonid', surname: 'Bondar', department: 'back',blockHeight: 1, projects: [
+                id: 'back-1', name: 'Leonid', surname: 'Bondar', department: 'back', blockHeight: 1, projects: [
                     { positionX: 0, positionY: 0, id: "back-1-1", title: "Startup", projStart: "Aug 15 2020", duration: 2, type: 'main' },
                     { positionX: 1, positionY: 0, id: "back-2-1", title: "Startup", projStart: "Aug 15 2020", duration: 2, type: 'main' }
                 ]
@@ -30,7 +31,7 @@ const data = [
     {
         departamentName: "QA", show: true, workers: [
             {
-                id: 'qa-1', name: 'Leonid', surname: 'Bondar', department: 'qa', blockHeight: 1,projects: [
+                id: 'qa-1', name: 'Leonid', surname: 'Bondar', department: 'qa', blockHeight: 1, projects: [
                     { positionX: 1, positionY: 0, id: "qa-1-1", title: "Startup 1", projStart: "Aug 15 2020", duration: 2, type: 'main' },
                     { positionX: 3, positionY: 0, id: "qa-1-2", title: "Startup 2", projStart: "Aug 15 2020", duration: 2, type: 'main' },
                 ]
@@ -51,8 +52,20 @@ const data = [
 
 
 export default function CalculateData({ daysInRow, rowWidth }) {
+    const [board, setBoard] = useState(data)
     const cellWidth = rowWidth / daysInRow.length
     const [someData, setSomeData] = useState(givePositionY(data))
+
+    function addingInfo  (arr, startDate, endDate, title)  {
+        // e.preventDefault();
+
+        const [departamentID, workerId] = arr
+        console.log('addingInfo', departamentID, workerId, startDate, endDate, title)
+
+         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: "qa-1-5", title: "Startup 5", projStart: "Aug 15 2020", duration: 2, type: 'main' },)
+       console.log(board) 
+    }
+
 
     const element = document.querySelectorAll('.handlers');
     const resizer = document.querySelectorAll('.resizer')
@@ -67,17 +80,16 @@ export default function CalculateData({ daysInRow, rowWidth }) {
             function addDragger() {
                 [...element].map(v => v.classList.add("smooth-dnd-draggable-wrapper"))
             }
-    
+
             currentResizer.addEventListener('mouseover', deleteDragger)
             currentResizer.addEventListener('mouseout', addDragger)
         }
-    
+
     }, [resizer])
-   
 
 
 
-    const [board, setBoard] = useState(data)
+    console.log(board)
 
-    return <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} rowWidth={rowWidth} setSomeData={setSomeData} />
+    return <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} rowWidth={rowWidth} setSomeData={setSomeData} addingInfo={addingInfo} />
 }

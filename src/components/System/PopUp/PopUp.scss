@@ -1,9 +1,78 @@
 .PopUp {
     position: fixed;
-    left: 20%;
-    top: 10%;
-    height: 300px;
-    width: 500px;
-    background-color: #66bb6a;
+    left: 0;
+    top: 0;
+    // height: 100%;
+    width: 100%;
+    // background-color: #66bb6a;
     z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    .popUpForm {
+        z-index: 12;
+
+        width: 46%;
+        // height: 4%;
+        background-color: $grey;
+        margin-top: 10%;
+        .title {
+            display: flex;
+            justify-content: space-between;
+            h1 {
+                padding: 10px 20px;
+                font-size: 28px;
+            }
+            img {
+                width: 15px;
+                height: 15px;
+                align-self: center;
+                margin: 0 20px;
+
+                transform: rotate(45deg);
+                cursor: pointer;
+            }
+        }
+       
+        .dates {
+            padding: 20px 5px;
+            display: flex;
+            p {
+                margin: 0 15px;
+            }
+        }
+        form > p {
+            padding: 10px 20px;
+            margin-bottom: 5px;
+        }
+        .textarea {
+            margin: 0 3%;
+            // padding: 10px 20px;
+            width: 94%;
+        }
+        .buttons {
+            margin: 40px 0 10px;
+            display: flex;
+            justify-content: space-around;
+            .submitBtn,
+            .cancelBtn {
+                width: 46%;
+                height: 30px;
+                border: none;
+                background-color: $darkGrey;
+                color: white;
+            }
+        }
+    }
+
+    .popUpBtn {
+        position: fixed;
+        z-index: 11;
+        height: 100%;
+        width: 100%;
+        background: rgba(128, 128, 128, 0.199);
+        padding: 0;
+        margin: 0;
+    }
 }
