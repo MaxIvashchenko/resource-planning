@@ -167,6 +167,7 @@ class AbsoluteSmooth extends Component {
             }
 
             this.setState({ startDrag: false, board: givePositionY(this.state.board) });
+            console.log(this.state.board[0].workers[0].projects)
             this.forceUpdate();
         }
 

@@ -17,7 +17,8 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
     "react-sizeme": "^2.6.12",
-    "react-smooth-dnd": "^0.11.1"
+    "react-smooth-dnd": "^0.11.1",
+    "use-force-update": "^1.0.7"
   },
   "scripts": {
     "start": "react-scripts start",

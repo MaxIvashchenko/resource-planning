@@ -1,34 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Draggable } from 'react-smooth-dnd';
+import useForceUpdate from 'use-force-update';
 
-const element = document.querySelectorAll('.handlers');
-const resizer = document.querySelectorAll('.resizer')
-
-
-for (let i = 0; i < resizer.length; i++) {
-    const currentResizer = resizer[i];
-    console.log('CalculateData resizer')
-    function deleteDragger() {
-        [...element].map(v => v.classList.remove("smooth-dnd-draggable-wrapper"))
-    }
-    function addDragger() {
-        [...element].map(v => v.classList.add("smooth-dnd-draggable-wrapper"))
-    }
-
-    currentResizer.addEventListener('mouseover', deleteDragger)
-    currentResizer.addEventListener('mouseout', addDragger)
-}
 
 export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departamentID, setSomeData, board }) {
 
     const blockWidth = cellWidth || 1
+    const forceUpdate = useForceUpdate();
 
     let ourPosition = piece.positionX * blockWidth
 
     const element = document.querySelectorAll('.handlers');
 
     const resizer = document.querySelectorAll('.resizer')
-
 
 
     for (let i = 0; i < resizer.length; i++) {
@@ -52,11 +36,15 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
             original_width = parseFloat(getComputedStyle(element[elI], null).getPropertyValue('width').replace('px', ''));
             original_left = parseFloat(getComputedStyle(element[elI], null).getPropertyValue('left').replace('px', ''));
             original_mouse_x = e.pageX;
-            console.log('mousedown')
+            console.log('mousedown',)
 
             window.addEventListener('mousemove', resize)
-            window.addEventListener('mouseup', function (e) { window.removeEventListener('mousemove', resize) })
+            window.addEventListener('mouseup', function (e) {
+                window.removeEventListener('mousemove', resize);
+            })
+
         })
+
 
 
         function resize(e) {
@@ -67,25 +55,24 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
 
 
                 if (currentRightResizer.classList.contains('rightHandler')) {
-
                     let moveDiff = e.pageX - element[elI].getBoundingClientRect().left;
-                    console.log(moveDiff)
                     let addingWidth = Math.round(moveDiff / cellWidth)
                     let newWidth = addingWidth * cellWidth
                     // console.log('resize rightHandlers')
                     if (newWidth >= cellWidth) {
                         element[elI].style.width = newWidth + 'px';
-                        
+
                         piece.duration = addingWidth
-                        setSomeData(piece)
+                        // setSomeData(piece)
                     }
-
-
+                    moveDiff=0;
+                    addingWidth=0;
+                    newWidth=0
                 } else {
                     let moveDiff = e.pageX - original_mouse_x;
                     let math = Math.round(-moveDiff / cellWidth)
                     let addingWidth = math * cellWidth
-                    const width = Math.round(original_width + addingWidth)
+                    let width = Math.round(original_width + addingWidth)
 
                     let withCellWI = Math.round(cellWidth)
 
@@ -95,10 +82,17 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
 
                         piece.positionX = piecePositionX - math
                         piece.duration = pieceDuration + math
-                        setSomeData(piece)
+                        // setSomeData(piece)
                     }
+                    // forceUpdate()
+                     moveDiff = 0
+                     math = 0
+                     addingWidth = 0
+                     withCellWI = 0
+                     width = 0
                 }
             }
+
         }
 
         // setTimeout(() => resize, 2000);
@@ -109,10 +103,11 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
 
     useEffect(() => {
         // console.log(board[departamentID].workers[rowIndex].projects[pieceIndex])
+        forceUpdate()
 
-        setSomeData(board)
+        setSomeData(piece)
 
-    }, [piece, rowIndex, departamentID])
+    }, [piece, board, rowIndex, departamentID])
     // console.log('changed')
 
 
@@ -122,8 +117,8 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
 
             <Draggable
                 id={`${piece.id}-dragger`}
-                className="handlers"  
-                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${ 34*piece.positionY}px` }}>
+                className="handlers"
+                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${34 * piece.positionY}px` }}>
                 <div className={` ${piece.type}`} >
                     <div className="project">{piece.title}</div>
                     <div className="resizer leftHandler" />

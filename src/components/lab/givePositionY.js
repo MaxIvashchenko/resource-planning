@@ -13,7 +13,7 @@
                      
                         if (v.positionY === proj.positionY) {
                             if (proj.positionX + proj.duration <= v.positionX || v.positionX + v.duration <= proj.positionX) {
-                                proj.positionY = 0
+                                // proj.positionY = 0
 
                             } else {
                                 proj.positionY = v.positionY + 1
