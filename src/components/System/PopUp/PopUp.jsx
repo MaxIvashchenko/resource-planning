@@ -8,20 +8,14 @@ export default function PopUp({ handlerPopUp,workerInfo,addingInfo }) {
     const [startDate, setStartDate] = useState(new Date().getTime());
     const [endDate, setEndDate] = useState(new Date().setDate(new Date().getDate()));
     const [title, setTitle] = useState('')
-    // duration: 2
-    // id: "back-1-1"
-    // positionX: 1
-    // positionY: 0
-    // projStart: "Aug 15 2020"
-    // title: "Startup"
-    // type: "main"
-
-    console.log(startDate,endDate,title)
 
     const myChangeHandler = (event) => {
         setTitle(event.target.value)
     }
-    
+    const addInfo = () => {
+        addingInfo(workerInfo, startDate,endDate,title)
+        handlerPopUp(false)
+    }
     return (
         <>
 
@@ -65,7 +59,7 @@ export default function PopUp({ handlerPopUp,workerInfo,addingInfo }) {
                             onChange={myChangeHandler}
                         />
                         <div className="buttons">
-                            <button onClick={() =>  addingInfo(workerInfo, startDate,endDate,title)} className="submitBtn">submit</button>
+                            <button onClick={() =>  addInfo()} className="submitBtn">submit</button>
                             <button onClick={() => handlerPopUp(false)} className="cancelBtn">cancel</button>
                         </div>
 

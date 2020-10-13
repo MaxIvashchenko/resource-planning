@@ -32,7 +32,7 @@ class AbsoluteSmooth extends Component {
             dayOffsetLeft: 0,
             daysRowWidth: 0,
             x: 0,
-            showPopUp: false,
+            showAddPopUp: false,
             workerInfo: [],
             board: this.props.board
         }
@@ -55,7 +55,7 @@ class AbsoluteSmooth extends Component {
         this.setState({ board: newArray })
     }
     handlerPopUp(bol){
-        this.setState({ showPopUp: bol })
+        this.setState({ showAddPopUp: bol })
     }
 
     getWorkersId(departamentID, workerId){
@@ -68,7 +68,7 @@ class AbsoluteSmooth extends Component {
 
         return (
             <>
-                {this.state.showPopUp && <PopUp handlerPopUp={this.handlerPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>}
+                {this.state.showAddPopUp && <PopUp handlerPopUp={this.handlerPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>}
 
                 { this.state.board.map((departament, departamentID) => {
 

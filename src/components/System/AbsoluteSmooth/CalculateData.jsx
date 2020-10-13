@@ -62,7 +62,7 @@ export default function CalculateData({ daysInRow, rowWidth }) {
         const [departamentID, workerId] = arr
         console.log('addingInfo', departamentID, workerId, startDate, endDate, title)
 
-         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: "qa-1-5", title: "Startup 5", projStart: "Aug 15 2020", duration: 2, type: 'main' },)
+         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: "qa-1-5", title, projStart: "Aug 15 2020", duration: 2, type: 'main' },)
        console.log(board) 
     }
 
