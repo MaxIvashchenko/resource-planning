@@ -14,7 +14,7 @@ class AbsoluteSmooth extends Component {
         this.onDrop = this.onDrop.bind(this);
         this.shouldAcceptDrop = this.shouldAcceptDrop.bind(this);
 
-        this.handlerPopUp = this.handlerPopUp.bind(this);
+        this.handlerAddPopUp = this.handlerAddPopUp.bind(this);
         this.onDragEnter = this.onDragEnter.bind(this);
         this.onDragEnd = this.onDragEnd.bind(this);
         this.onDragLeave = this.onDragLeave.bind(this);
@@ -34,7 +34,8 @@ class AbsoluteSmooth extends Component {
             x: 0,
             showAddPopUp: false,
             workerInfo: [],
-            board: this.props.board
+            board: this.props.board,
+
         }
 
 
@@ -54,27 +55,29 @@ class AbsoluteSmooth extends Component {
 
         this.setState({ board: newArray })
     }
-    handlerPopUp(bol){
+    handlerAddPopUp(bol){
         this.setState({ showAddPopUp: bol })
     }
 
     getWorkersId(departamentID, workerId){
         this.setState({ workerInfo: [departamentID, workerId] })
-        
-        this.handlerPopUp(true)
+        // console.log(departamentID, workerId)
+        this.handlerAddPopUp(true)
     }
 
     render() {
 
         return (
             <>
-                {this.state.showAddPopUp && <PopUp handlerPopUp={this.handlerPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>}
+                {this.state.showAddPopUp && <PopUp handlerAddPopUp={this.handlerAddPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>}
 
                 { this.state.board.map((departament, departamentID) => {
 
                     return (
 
-                        <div key={departament.departamentName + "-" + departamentID} >
+                        <div 
+                        // onClick={()=>console.log('click')} 
+                        key={departament.departamentName + "-" + departamentID} >
 
                             <DepartmentTitle departament={departament} departamentID={departamentID} toggler={this.toggler} />
 
@@ -116,6 +119,7 @@ class AbsoluteSmooth extends Component {
                                                                 pieceIndex={pieceIndex}
                                                                 rowIndex={rowIndex}
                                                                 departamentID={departamentID}
+                                                                deleteProject={this.props.deleteProject}
                                                                 board={this.props.board}
                                                                 piece={piece}
                                                                 cellWidth={this.props.cellWidth}
@@ -177,7 +181,7 @@ class AbsoluteSmooth extends Component {
             }
 
             this.setState({ startDrag: false, board: givePositionY(this.state.board) });
-            console.log(this.state.board[0].workers[0].projects)
+
         }
 
         this.forceUpdate();

@@ -4,9 +4,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import cross from '../../../images/plus.svg'
 
-export default function PopUp({ handlerPopUp,workerInfo,addingInfo }) {
+export default function PopUp({ handlerAddPopUp,workerInfo,addingInfo }) {
     const [startDate, setStartDate] = useState(new Date().getTime());
-    const [endDate, setEndDate] = useState(new Date().setDate(new Date().getDate()));
+    const [endDate, setEndDate] = useState(new Date().setDate(new Date().getDate()+1));
     const [title, setTitle] = useState('')
 
     const myChangeHandler = (event) => {
@@ -14,7 +14,7 @@ export default function PopUp({ handlerPopUp,workerInfo,addingInfo }) {
     }
     const addInfo = () => {
         addingInfo(workerInfo, startDate,endDate,title)
-        handlerPopUp(false)
+        handlerAddPopUp(false)
     }
     return (
         <>
@@ -24,7 +24,7 @@ export default function PopUp({ handlerPopUp,workerInfo,addingInfo }) {
                     <form></form>
                         <div className="title">
                             <h1>Event  </h1>
-                            <img onClick={() => handlerPopUp(false)} src={cross} alt="cross-icon" />
+                            <img onClick={() => handlerAddPopUp(false)} src={cross} alt="cross-icon" />
                         </div>
 
                         <div className="dates">
@@ -54,18 +54,19 @@ export default function PopUp({ handlerPopUp,workerInfo,addingInfo }) {
                         <p>Enter Title:</p>
 
                         <textarea
+                        required
                             className="textarea"
                             type='text'
                             onChange={myChangeHandler}
                         />
                         <div className="buttons">
                             <button onClick={() =>  addInfo()} className="submitBtn">submit</button>
-                            <button onClick={() => handlerPopUp(false)} className="cancelBtn">cancel</button>
+                            <button onClick={() => handlerAddPopUp(false)} className="cancelBtn">cancel</button>
                         </div>
 
 
                 </div>
-                <button className="popUpBtn" onClick={() => handlerPopUp(false)}>qwdqw</button>
+                <button className="popUpBtn" onClick={() => handlerAddPopUp(false)}>qwdqw</button>
 
             </div>
         </>

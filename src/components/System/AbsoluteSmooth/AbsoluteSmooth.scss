@@ -1,6 +1,4 @@
 .AbsoluteSmooth {
-    
-    
     .svgLines {
         height: 100%;
         position: absolute;
@@ -122,19 +120,72 @@
                         height: 100%;
                         border: none;
                         background: none;
-
-
                     }
                     button:focus {
                         outline: none;
                     }
+                    .editPopup {
+                        // float: right;
+                        padding: 5px 0;
+                        // display: flex;
+                        position: fixed;
+                        width: 300px;
+                        height: 100px;
+                        border: 1px solid grey;
+                        z-index: 12;
+                        background-color: #fff;
+                        .popupTitle {
+                            padding: 10px 10px 5px;
+                        }
+                        .buttonWrapper {
+                            display: flex;
+                            justify-content: flex-end;
+                            .cyrcleStyle {
+                                position: absolute;
+                                left: 5px;
+                                top: 8px;
+                                width: 25px;
+                                height: 25px;
+                                border-radius: 50%;
+                                margin: 0 5px;
+                            }
+                            .popup-main {
+                                background-color: #a5d6a7;
+                            }
+                            .popup-education {
+                                background-color: #fff59d;
+                            }
+
+                            button {
+                                width: 20px;
+                                height: 20px;
+                                text-align: right;
+                                margin: 0 10px;
+                                img {
+                                    width: 20px;
+                                    height: 20px;
+
+                                }
+                                .arrowIcon {
+                                    transform: rotate(45deg);
+                                }
+                            }
+                            .btnDelete:hover::after {
+                                content: "delete";
+                                position: absolute;
+                                top: 40px;
+                                right: 20px
+                            }
+                            .btnClose:hover::after {
+                                content: "close";
+                                position: absolute;
+                                top: 40px;
+                                right: 0px
+                            }
+                        }
+                    }
                 }
-                .divx {
-                    position: fixed;
-                    width: 300px;
-                    height: 100px;
-                border: 1px solid grey;
-                }
+
                 .main {
                     cursor: pointer;
                     transition: opacity 0.2s ease;
@@ -148,7 +199,6 @@
                 .education {
                     cursor: pointer;
                     transition: opacity 0.2s ease;
-
 
                     .project {
                         text-align: center;

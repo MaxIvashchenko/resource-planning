@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Draggable, dropHandlers } from 'react-smooth-dnd';
 import useForceUpdate from 'use-force-update';
+import arrowIcon from '../../../images/plus.svg'
+import deleteIcon from '../../../images/delete.svg'
+import editIcon from '../../../images/edit.svg'
 
 
-export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departamentID, setSomeData, board }) {
+export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departamentID, setSomeData, board, deleteProject }) {
 
     const blockWidth = cellWidth || 1
     const forceUpdate = useForceUpdate();
@@ -112,19 +115,29 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
     //     }, [piece, board, rowIndex, departamentID])
     //     // console.log('changed')
 
-const [X, setX] = useState(0)
-const [Y, setY] = useState()
+    const [X, setX] = useState(0)
+    const [Y, setY] = useState()
+    const [thisId, setthisId] = useState()
 
-    const someFunc = (e) => {
-        console.log(e.currentTarget)
+    const someFunc = (e, piec) => {
+        // console.log(piec)
+        setthisId('')
         setX(e.clientX)
-        
+
         setY(e.clientY)
-
-
+        setthisId(piec)
     }
+//     const deleteProject = (currentId) => {
+// const data = board
+//         //    board, rowIndex, departamentID,
+//         data[departamentID].workers[rowIndex].projects.splice(1, 1)
+//         console.log(data[departamentID].workers[rowIndex].projects)
+//         // console.log()
+//         deleteProject()
+//     }
 
     if (piece) {
+        // console.log(thisId)
 
         return (
 
@@ -133,12 +146,35 @@ const [Y, setY] = useState()
                 className="handlers"
                 style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${34 * piece.positionY}px` }}>
                 <div className={` ${piece.type}`} >
-                    <button onClick={(e) => someFunc(e)}>
+                    <button onClick={(e) => someFunc(e, piece.id)}>
                         <div className="project">{piece.title}</div>
                         <div className="resizer leftHandler" />
                         <div className="resizer rightHandler" />
                     </button>
-                    <div style={{top:Y+20,left: X-150}} className="divx"/>
+                    {piece.id === thisId &&
+
+
+                        <div style={{ top: Y + 20, left: X - 150 }} className="editPopup">
+
+                            <div className="buttonWrapper">
+                                <div className={`cyrcleStyle popup-${piece.type}`}></div>
+                                <button className="btnEdit" onClick={() => console.log('edit')}>
+                                    <img src={editIcon} alt="edit-icon" />
+                                </button>
+                                <button className="btnDelete" onClick={() => deleteProject(pieceIndex, rowIndex, departamentID)}>
+                                    <img src={deleteIcon} alt="delete-icon" />
+                                </button>
+                                <button className="btnClose" onClick={() => setthisId('')}>
+                                    <img className="arrowIcon" src={arrowIcon} alt="close-icon" />
+                                </button>
+                            </div>
+
+                            <div className="popupTitle">{piece.title}</div>
+
+                        </div>
+
+
+                    }
                 </div>
             </Draggable>
 

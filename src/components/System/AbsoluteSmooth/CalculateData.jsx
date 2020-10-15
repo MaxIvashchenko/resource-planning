@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import AbsoluteSmooth from './AbsoluteSmooth'
 import { givePositionY } from '../../lab/givePositionY'
 import useForceUpdate from 'use-force-update';
+import moment from 'moment';
+const calendarDay = 24 * 60 * 60 * 1000;
 
 const data = [
     {
@@ -56,14 +58,24 @@ export default function CalculateData({ daysInRow, rowWidth }) {
     const cellWidth = rowWidth / daysInRow.length
     const [someData, setSomeData] = useState(givePositionY(data))
 
+    const forceUpdate = useForceUpdate();
+
+
     function addingInfo  (arr, startDate, endDate, title)  {
         // e.preventDefault();
+        const daysLeft = Math.round((endDate - startDate) / calendarDay);
 
         const [departamentID, workerId] = arr
         console.log('addingInfo', departamentID, workerId, startDate, endDate, title)
 
-         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: "qa-1-5", title, projStart: "Aug 15 2020", duration: 2, type: 'main' },)
+         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: "qa-1-5", title, projStart: "Aug 15 2020", duration: daysLeft, type: 'main' },)
        console.log(board) 
+    }
+
+    function deleteProject (pieceIndex, workerId, departamentID) {
+        console.log('deleteProject',pieceIndex, workerId, departamentID)
+        board[departamentID].workers[workerId].projects.splice(pieceIndex,1)
+        forceUpdate()
     }
 
 
@@ -91,5 +103,5 @@ export default function CalculateData({ daysInRow, rowWidth }) {
 
     console.log(board)
 
-    return <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} rowWidth={rowWidth} setSomeData={setSomeData} addingInfo={addingInfo} />
+    return <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} deleteProject={deleteProject} rowWidth={rowWidth} setSomeData={setSomeData} addingInfo={addingInfo} />
 }
