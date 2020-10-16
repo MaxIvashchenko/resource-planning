@@ -4,9 +4,19 @@ import useForceUpdate from 'use-force-update';
 import arrowIcon from '../../../images/plus.svg'
 import deleteIcon from '../../../images/delete.svg'
 import editIcon from '../../../images/edit.svg'
+import cross from '../../../images/plus.svg'
 
 
-export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departamentID, setSomeData, board, deleteProject }) {
+export default function Piece(props) {
+    const { piece,
+        cellWidth,
+        pieceIndex,
+        rowIndex,
+        departamentID,
+        setSomeData,
+        board,
+        deleteProject,
+        getInnerProjectOffset } = props
 
     const blockWidth = cellWidth || 1
     const forceUpdate = useForceUpdate();
@@ -14,13 +24,103 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
     let ourPosition = piece.positionX * blockWidth
 
     const element = document.querySelectorAll('.handlers');
-
     const resizer = document.querySelectorAll('.resizer')
 
+    const [X, setX] = useState(0)
+    const [Y, setY] = useState()
+    const [thisId, setthisId] = useState()
+    const [showPopup, setshowPopup] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+
+    const someFunc = (e, piec) => {
+        setthisId('')
+        setX(e.clientX)
+        setY(e.clientY)
+        setthisId(piec)
+    }
+    const closer = (pieceIndex, rowIndex, departamentID) => {
+        deleteProject(pieceIndex, rowIndex, departamentID)
+        setshowPopup(false)
+    }
+
+    if (piece) {
+        // console.log(thisId)
+
+        return (
+
+            <Draggable
+                id={`${piece.id}-dragger`}
+                className="handlers"
+
+                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${34 * piece.positionY}px` }}>
+                <div className={` ${piece.type}`} >
+                    <button onClick={(e) => someFunc(e, piece.id)}>
+                        <div onMouseDown={(e) => getInnerProjectOffset(e.nativeEvent.offsetX)} onClick={() => setshowPopup(!showPopup)} className="project">{piece.title}</div>
+                        <div className="resizer leftHandler" />
+                        <div className="resizer rightHandler" />
+                    </button>
+                    {showPopup &&
+                        <div style={{ top: Y + 20, left: X - 150 }} className="editPopup">
+
+                            <div className="buttonWrapper">
+                                <div className={`cyrcleStyle popup-${piece.type}`}></div>
+                                <button className="btnEdit" onClick={() => setIsEditing(true)}>
+                                    <img src={editIcon} alt="edit-icon" />
+                                </button>
+                                <button className="btnDelete" onClick={() => closer(pieceIndex, rowIndex, departamentID)}>
+                                    <img src={deleteIcon} alt="delete-icon" />
+                                </button>
+                                <button className="btnClose" onClick={() => setshowPopup(false)}>
+                                    <img className="arrowIcon" src={arrowIcon} alt="close-icon" />
+                                </button>
+                            </div>
+                            {isEditing ?
+                                <div className="popupTitle">{piece.title}</div>
+                                :
+                                // <div className="PopUp">
+                                //     <div className="popUpForm">
+
+                                //         <div className="title">
+                                //             <h1>Event  </h1>
+                                //             <img onClick={() => setIsEditing(false)} src={cross} alt="cross-icon" />
+                                //         </div>
+                                //         <p>Enter Title:</p>
+
+                                //         <textarea
+                                //             required
+                                //             className="textarea"
+                                //             type='text'
+                                //             // onChange={myChangeHandler}
+                                //         />
+                                //         <div className="buttons">
+                                //             <button onClick={() => console.log()} className="submitBtn">submit</button>
+                                //             <button onClick={() => setIsEditing(false)} className="cancelBtn">cancel</button>
+                                //         </div>
+
+
+                                //     </div>
+                                //     <button className="popUpBtn" onClick={() => setIsEditing(false)}>qwdqw</button>
+
+                                // </div>
+                                <></>
+                            }
+
+                        </div>
+                    }
+                </div>
+            </Draggable>
+
+        );
+
+    }
+
+
+    else { return null; }
+}
 
 
 
-    //     for (let i = 0; i < resizer.length; i++) {
+ //     for (let i = 0; i < resizer.length; i++) {
     //         const currentRightResizer = resizer[i];
     //         let original_width = 0;
     //         let original_mouse_x = 0;
@@ -114,75 +214,3 @@ export default function Piece({ piece, cellWidth, pieceIndex, rowIndex, departam
 
     //     }, [piece, board, rowIndex, departamentID])
     //     // console.log('changed')
-
-    const [X, setX] = useState(0)
-    const [Y, setY] = useState()
-    const [thisId, setthisId] = useState()
-
-    const someFunc = (e, piec) => {
-        // console.log(piec)
-        setthisId('')
-        setX(e.clientX)
-
-        setY(e.clientY)
-        setthisId(piec)
-    }
-//     const deleteProject = (currentId) => {
-// const data = board
-//         //    board, rowIndex, departamentID,
-//         data[departamentID].workers[rowIndex].projects.splice(1, 1)
-//         console.log(data[departamentID].workers[rowIndex].projects)
-//         // console.log()
-//         deleteProject()
-//     }
-
-    if (piece) {
-        // console.log(thisId)
-
-        return (
-
-            <Draggable
-                id={`${piece.id}-dragger`}
-                className="handlers"
-                style={{ overflow: "visible", position: 'absolute', left: ourPosition, width: blockWidth * piece.duration, top: `${34 * piece.positionY}px` }}>
-                <div className={` ${piece.type}`} >
-                    <button onClick={(e) => someFunc(e, piece.id)}>
-                        <div className="project">{piece.title}</div>
-                        <div className="resizer leftHandler" />
-                        <div className="resizer rightHandler" />
-                    </button>
-                    {piece.id === thisId &&
-
-
-                        <div style={{ top: Y + 20, left: X - 150 }} className="editPopup">
-
-                            <div className="buttonWrapper">
-                                <div className={`cyrcleStyle popup-${piece.type}`}></div>
-                                <button className="btnEdit" onClick={() => console.log('edit')}>
-                                    <img src={editIcon} alt="edit-icon" />
-                                </button>
-                                <button className="btnDelete" onClick={() => deleteProject(pieceIndex, rowIndex, departamentID)}>
-                                    <img src={deleteIcon} alt="delete-icon" />
-                                </button>
-                                <button className="btnClose" onClick={() => setthisId('')}>
-                                    <img className="arrowIcon" src={arrowIcon} alt="close-icon" />
-                                </button>
-                            </div>
-
-                            <div className="popupTitle">{piece.title}</div>
-
-                        </div>
-
-
-                    }
-                </div>
-            </Draggable>
-
-        );
-
-    }
-
-
-    else { return null; }
-}
-

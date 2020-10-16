@@ -21,7 +21,8 @@ class AbsoluteSmooth extends Component {
         this.toggler = this.toggler.bind(this);
         this.onDragStart = this.onDragStart.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
-
+        this.getInnerProjectOffset = this.getInnerProjectOffset.bind(this);
+        
         this.getDaysInRow = this.props.getDaysInRow
         this.onDropReady = this.onDropReady.bind(this);
 
@@ -35,7 +36,8 @@ class AbsoluteSmooth extends Component {
             showAddPopUp: false,
             workerInfo: [],
             board: this.props.board,
-
+            innerProjectOffset: 0,
+            isEditing: false,
         }
 
 
@@ -64,12 +66,16 @@ class AbsoluteSmooth extends Component {
         // console.log(departamentID, workerId)
         this.handlerAddPopUp(true)
     }
+    getInnerProjectOffset(num){
+        this.setState({ innerProjectOffset: num })
+    }
 
     render() {
 
         return (
             <>
                 {this.state.showAddPopUp && <PopUp handlerAddPopUp={this.handlerAddPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>}
+                {/* {this.state.isEditing && <PopUp handlerAddPopUp={this.handlerAddPopUp}  workerInfo={this.state.workerInfo} addingInfo={this.props.addingInfo}/>} */}
 
                 { this.state.board.map((departament, departamentID) => {
 
@@ -95,7 +101,7 @@ class AbsoluteSmooth extends Component {
                                                 <button onClick={() => this.getWorkersId(departamentID, rowIndex)}><img src={plus} alt="plus-icon" /></button>
                                             </div>
 
-                                            <div style={{ width: this.props.rowWidth, height: `${34 * row.blockHeight}px` }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
+                                            <div   style={{ width: this.props.rowWidth, height: `${34 * row.blockHeight}px` }} id="inside" className="day" onMouseMove={this.handleMouseMove}>
 
                                                 <Container
                                                     className="thisIsContainer"
@@ -107,7 +113,7 @@ class AbsoluteSmooth extends Component {
                                                     // onDragEnter={() => this.onDragEnter(departamentID, rowIndex,)}
                                                     onDragLeave={() => this.onDragLeave(departamentID, rowIndex,)}
                                                     animationDuration={'none'}
-                                                    dropClass='dropClass'
+                                                    // dropClass='dropClass'
                                                     onDragStart={(result) => this.onDragStart(result, departamentID, rowIndex,)}
                                                     onDragEnd={(result) => this.onDragEnd(result, departamentID, rowIndex, this.props.cellWidth)}
                                                 // onDropReady={(result) => this.onDropReady(result, departamentID, rowIndex,)}
@@ -123,7 +129,9 @@ class AbsoluteSmooth extends Component {
                                                                 board={this.props.board}
                                                                 piece={piece}
                                                                 cellWidth={this.props.cellWidth}
-                                                                setSomeData={this.props.setSomeData} />
+                                                                setSomeData={this.props.setSomeData} 
+                                                                getInnerProjectOffset={this.getInnerProjectOffset}
+                                                                />
                                                         )
                                                     })}
                                                 </Container>
@@ -177,27 +185,30 @@ class AbsoluteSmooth extends Component {
 
             if (addedIndex !== null) {
                 this.state.board[departament].workers[rowIndex].projects.push(obj);
-                // givePositionY(this.state.board)
             }
 
             this.setState({ startDrag: false, board: givePositionY(this.state.board) });
 
         }
-
+        this.getInnerProjectOffset(0)
         this.forceUpdate();
 
 
     }
 
     handleMouseMove(event) {
+
         if (this.state.startDrag) {
-            this.setState({
-                x: event.nativeEvent.x - this.state.dayOffsetLeft
+        console.log(this.state.innerProjectOffset)
+        this.setState({
+                x: event.nativeEvent.x - this.state.dayOffsetLeft-this.state.innerProjectOffset
             });
         }
     }
 
     onDragStart(result, departament, row) {
+
+
         this.setState({ startDrag: true });
     }
     onDragEnter(departament, row, col) {

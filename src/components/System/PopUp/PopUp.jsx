@@ -21,7 +21,7 @@ export default function PopUp({ handlerAddPopUp,workerInfo,addingInfo }) {
 
             <div className="PopUp">
                 <div className="popUpForm">
-                    <form></form>
+
                         <div className="title">
                             <h1>Event  </h1>
                             <img onClick={() => handlerAddPopUp(false)} src={cross} alt="cross-icon" />
