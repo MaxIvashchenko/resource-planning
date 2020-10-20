@@ -72,12 +72,14 @@ export default function CalculateData({ daysInRow, rowWidth }) {
 
 
         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: nanoid(8), title, projStart: startDate, projEnd: endDate, duration: daysLeft, type },)
+        forceUpdate()
 
     }
 
-    function editProject(pieceIndex, workerId, departamentID,piece) {
-console.log('project edited',pieceIndex, workerId, departamentID)
-board[departamentID].workers[workerId].projects[pieceIndex] = piece
+    function editProject(pieceIndex, workerId, departamentID, piece) {
+        console.log('project edited', pieceIndex, workerId, departamentID)
+        board[departamentID].workers[workerId].projects[pieceIndex] = piece
+        forceUpdate()
 
     }
 
