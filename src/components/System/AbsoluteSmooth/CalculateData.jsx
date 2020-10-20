@@ -3,6 +3,9 @@ import AbsoluteSmooth from './AbsoluteSmooth'
 import { givePositionY } from '../../lab/givePositionY'
 import useForceUpdate from 'use-force-update';
 import moment from 'moment';
+import { nanoid } from 'nanoid'
+
+
 const calendarDay = 24 * 60 * 60 * 1000;
 
 const data = [
@@ -10,8 +13,8 @@ const data = [
         departamentName: "BACKEND", show: true, workers: [
             {
                 id: 'back-1', name: 'Leonid', surname: 'Bondar', department: 'back', blockHeight: 1, projects: [
-                    { positionX: 0, positionY: 0, id: "back-1-1", title: "Startup", projStart: "Aug 15 2020", duration: 2, type: 'main' },
-                    { positionX: 1, positionY: 0, id: "back-2-1", title: "Startup", projStart: "Aug 15 2020", duration: 2, type: 'main' }
+                    { positionX: 0, positionY: 0, id: "back-1-1", title: "Startup", projStart: 1603183344320, duration: 2, type: 'main' },
+                    { positionX: 1, positionY: 0, id: "back-2-1", title: "Startup", projStart: 1603356144000, duration: 2, type: 'main' }
                 ]
             },
             {
@@ -22,7 +25,7 @@ const data = [
             },
             {
                 id: 'back-4', name: 'Artur', surname: 'Rudenko', department: 'back', blockHeight: 1, projects: [
-                    { positionX: 2, positionY: 0, id: "back-4-1", title: "Manifest", projStart: "Aug 19 2020", duration: 4, type: "education" }
+                    { positionX: 2, positionY: 0, id: "back-4-1", title: "Manifest", projStart: 1603442544000, duration: 4, type: "education" }
                 ]
             },
             {
@@ -34,8 +37,8 @@ const data = [
         departamentName: "QA", show: true, workers: [
             {
                 id: 'qa-1', name: 'Leonid', surname: 'Bondar', department: 'qa', blockHeight: 1, projects: [
-                    { positionX: 1, positionY: 0, id: "qa-1-1", title: "Startup 1", projStart: "Aug 15 2020", duration: 2, type: 'main' },
-                    { positionX: 3, positionY: 0, id: "qa-1-2", title: "Startup 2", projStart: "Aug 15 2020", duration: 2, type: 'main' },
+                    { positionX: 1, positionY: 0, id: "qa-1-1", title: "Startup 1", projStart: 1603442544000, duration: 2, type: 'main' },
+                    { positionX: 3, positionY: 0, id: "qa-1-2", title: "Startup 2", projStart: 1603442544000, duration: 2, type: 'main' },
                 ]
             },
             {
@@ -61,20 +64,26 @@ export default function CalculateData({ daysInRow, rowWidth }) {
     const forceUpdate = useForceUpdate();
 
 
-    function addingInfo  (arr, startDate, endDate, title)  {
+    function addingInfo(arr, startDate, endDate, title, type) {
         // e.preventDefault();
         const daysLeft = Math.round((endDate - startDate) / calendarDay);
 
         const [departamentID, workerId] = arr
-        console.log('addingInfo', departamentID, workerId, startDate, endDate, title)
 
-         board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: "qa-1-5", title, projStart: "Aug 15 2020", duration: daysLeft, type: 'main' },)
-       console.log(board) 
+
+        board[departamentID].workers[workerId].projects.push({ positionX: 1, positionY: 0, id: nanoid(8), title, projStart: startDate, projEnd: endDate, duration: daysLeft, type },)
+
     }
 
-    function deleteProject (pieceIndex, workerId, departamentID) {
-        console.log('deleteProject',pieceIndex, workerId, departamentID)
-        board[departamentID].workers[workerId].projects.splice(pieceIndex,1)
+    function editProject(pieceIndex, workerId, departamentID,piece) {
+console.log('project edited',pieceIndex, workerId, departamentID)
+board[departamentID].workers[workerId].projects[pieceIndex] = piece
+
+    }
+
+    function deleteProject(pieceIndex, workerId, departamentID) {
+        console.log('deleteProject', pieceIndex, workerId, departamentID)
+        board[departamentID].workers[workerId].projects.splice(pieceIndex, 1)
         forceUpdate()
     }
 
@@ -103,5 +112,14 @@ export default function CalculateData({ daysInRow, rowWidth }) {
 
     console.log(board)
 
-    return <AbsoluteSmooth days={daysInRow} cellWidth={cellWidth} board={board} deleteProject={deleteProject} rowWidth={rowWidth} setSomeData={setSomeData} addingInfo={addingInfo} />
+    return <AbsoluteSmooth
+        days={daysInRow}
+        cellWidth={cellWidth}
+        board={board}
+        deleteProject={deleteProject}
+        rowWidth={rowWidth}
+        setSomeData={setSomeData}
+        addingInfo={addingInfo}
+        editProject={editProject}
+    />
 }

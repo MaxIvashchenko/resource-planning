@@ -131,6 +131,9 @@ class AbsoluteSmooth extends Component {
                                                                 cellWidth={this.props.cellWidth}
                                                                 setSomeData={this.props.setSomeData} 
                                                                 getInnerProjectOffset={this.getInnerProjectOffset}
+                                                                handlerAddPopUp={this.handlerAddPopUp} 
+                                                                editProject={this.props.editProject}
+
                                                                 />
                                                         )
                                                     })}
